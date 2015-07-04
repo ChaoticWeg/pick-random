@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <title>Pick Random - ChaoticWeg</title>
+        
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        
+        <script src="pick.js"></script>
+        
+        <script type="text/javascript">
+            var removeItem = function (item) {
+                item.fadeOut('fast', function () {
+                    $(this).remove();
+                });
+            };
+            
+            var RemoveThisItem = function () {
+                removeItem($(this).parent().parent());
+            };
+            
+            var CreateNewItem = function () {
+                var elementStr =
+                    '<div class="input-group picker-item">' +
+                    '<span class="input-group-btn">' +
+                    '<button class="btn btn-danger btn-remove-item" type="button">' +
+                    '<span class="glyphicon glyphicon-remove"></span>' +
+                    '</button></span>' +
+                    '<input type="text" class="form-control" placeholder="Enter item...">' +
+                    '</div>';
+                
+                var elem = $(elementStr);
+                elem.find('button.btn-remove-item').click(RemoveThisItem);
+                elem.appendTo('div#items-list').find('input[type=text]').focus();
+            };
+            
+            var ClearAllItems = function () {
+                $('div#items-list').find('div.picker-item').each(function () {
+                    removeItem($(this));
+                });
+            };
+            
+            $(document).ready(function () {
+                $('button.btn-remove-item').click(RemoveThisItem);
+                $('button.btn-add-item').click(CreateNewItem);
+                $('button.btn-clear-items').click(ClearAllItems);
+                $('button.btn-pick-item').click(doPick);
+            });
+            
+            var doPick = function () {
+                var arr = [];
+                
+                $('div#items-list').find('.picker-item').each(function () {
+                    var txt = $(this).find('input[type=text]').val();
+                    if (txt !== '')
+                        arr.push(txt);
+                });
+                
+                if (arr.length > 0) {
+                    var picked = pick(arr);
+                    $('p#output').text('Picked: ' + picked);
+                }
+            };
+        </script>
+        
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cosmo/bootstrap.min.css" rel="stylesheet">
+        
+        <style>.picker-item {margin:10px;}</style>
+    </head>
+    
+    <body role="document">
+        <div class="container">
+            <div class="page-header">
+                <h1>Pick Random</h1>
+            </div>
+            
+            <!-- Output -->
+            <div>
+                <button class="btn btn-success btn-pick-item" type="button">Pick!</button>
+                <div style="padding:10px;"></div>
+                <p class="lead" id="output">Click to pick!</p>
+            </div>
+            
+            <hr style="padding:20px;">
+            
+            <!-- Items list -->
+            <div>
+                <h2>
+                    Items &nbsp;&nbsp;
+                    <button class="btn btn-default btn-add-item" type="button">Add</button>
+                    <button class="btn btn-default btn-clear-items" type="button">Clear</button>
+                </h2>
+
+                <!-- list -->
+                <div id="items-list" style="padding:20px;">
+                    <div class="input-group picker-item">
+                        <span class="input-group-btn">
+                            <button class="btn btn-danger btn-remove-item" type="button">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                        </span>
+
+                        <input type="text" class="form-control" placeholder="Enter item...">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
