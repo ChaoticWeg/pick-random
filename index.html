@@ -53,6 +53,8 @@
             });
             
             var doPick = function () {
+                $('p#output').text('Picking...');
+                
                 var arr = [];
                 
                 $('div#items-list').find('.picker-item').each(function () {
@@ -61,10 +63,14 @@
                         arr.push(txt);
                 });
                 
+                var outTxt = '';
                 if (arr.length > 0) {
                     var picked = pick(arr);
-                    $('p#output').text('Picked: ' + picked);
+                    outTxt = 'Picked: ' + picked;
                 }
+                else outTxt = 'Invalid input.';
+                
+                $('p#output').text(outTxt);
             };
         </script>
         
