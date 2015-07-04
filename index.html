@@ -77,7 +77,7 @@
         </script>
         
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
-        <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cosmo/bootstrap.min.css" rel="stylesheet">
+        <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/flatly/bootstrap.min.css" rel="stylesheet">
         
         <style>.picker-item {margin:10px;}</style>
     </head>
@@ -88,14 +88,23 @@
                 <h1>Pick Random <small>v1.0</small></h1>
             </div>
             
-            <h3>What is this?</p>
-            <p>Add some items below, and click "pick" to pick a random one</p>
+            <div class="alert alert-info alert-dismissable" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <p>What is this?</p>
+                <p>Add some items below, and click "pick" to pick a random one</p>
+            </div>
             
             <!-- Output -->
-            <div>
-                <button class="btn btn-success btn-pick-item" type="button">Pick!</button>
-                <div style="padding:10px;"></div>
-                <p class="lead" id="output">Click to pick!</p>
+            <div class="row">
+                <div class="col-md-2">
+                    <button class="btn btn-success btn-pick-item" type="button">Pick >></button>
+                </div>
+                <div class="col-md-8">
+                    <div style="padding:3px;"></div>
+                    <p class="lead" id="output">Click to pick!</p>
+                </div>
             </div>
             
             <hr style="padding:20px;">
