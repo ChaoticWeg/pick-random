@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
         
         <title>Pick Random - ChaoticWeg</title>
         
@@ -35,7 +35,8 @@
                     '</div>';
                 
                 var elem = $(elementStr);
-                elem.find('button.btn-remove-item').click(RemoveThisItem);
+                elem.find('.btn-remove-item').click(RemoveThisItem);
+                elem.find('.btn-remove-item').focus(RemoveButtonFocus);
                 elem.appendTo('div#items-list').find('input[type=text]').focus();
             };
             
@@ -85,18 +86,23 @@
                 return (c === 'true');
             };
             
+            var RemoveButtonFocus = function () {
+                $(this).parent().parent().find('input[type=text]').focus();
+            };
+            
             $(document).ready(function () {
-                if (!shouldShowAlert())
-                {
-                    $('div#usage-alert').remove();
-                }
-                
-                $('button.btn-remove-item').click(RemoveThisItem);
-                $('button.btn-add-item').click(CreateNewItem);
-                $('button.btn-clear-items').click(ClearAllItems);
-                $('button.btn-pick-item').click(doPick);
-                
+                // usage alert (show once)
                 $('button#close-alert').click(NeverShowAlert);
+                if (!shouldShowAlert()) $('div#usage-alert').remove();
+                
+                // functionality
+                $('.btn-remove-item').click(RemoveThisItem);
+                $('.btn-add-item').click(CreateNewItem);
+                $('.btn-clear-items').click(ClearAllItems);
+                $('.btn-pick-item').click(doPick);
+                
+                // don't allow buttons to take focus
+                $('.btn-remove-item').focus(RemoveButtonFocus);
             });
             
             var doPick = function () {
@@ -166,6 +172,7 @@
 
                 <!-- list -->
                 <div id="items-list" style="padding:20px;">
+                    <!-- start with an example item -->
                     <div class="input-group picker-item">
                         <span class="input-group-btn">
                             <button class="btn btn-danger btn-remove-item" type="button">
