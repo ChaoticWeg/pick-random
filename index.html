@@ -47,11 +47,56 @@
                 CreateNewItem();
             };
             
+            var NeverShowAlert = function () {
+                setCookie(false);
+            };
+            
+            function setCookie(cvalue) {
+                var cname  = 'show-usage';
+                var exdays = 5;
+                
+                var d = new Date();
+                d.setTime(d.getTime() + (exdays*24*60*60*1000));
+                var expires = "expires="+d.toUTCString();
+                document.cookie = cname + "=" + cvalue + "; " + expires;
+            };
+            
+            function getCookie() {
+                var cname = 'show-usage';
+                var name = cname + "=";
+                var ca = document.cookie.split(';');
+                for(var i=0; i<ca.length; i++) {
+                    var c = ca[i];
+                    while (c.charAt(0)==' ') c = c.substring(1);
+                    if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+                }
+                return "";
+            };
+            
+            var shouldShowAlert = function () {
+                var c = getCookie();
+                
+                if (c === '')
+                {
+                    setCookie(true);
+                    return true;
+                }
+                
+                return (c === 'true');
+            };
+            
             $(document).ready(function () {
+                if (!shouldShowAlert())
+                {
+                    $('div#usage-alert').remove();
+                }
+                
                 $('button.btn-remove-item').click(RemoveThisItem);
                 $('button.btn-add-item').click(CreateNewItem);
                 $('button.btn-clear-items').click(ClearAllItems);
                 $('button.btn-pick-item').click(doPick);
+                
+                $('button#close-alert').click(NeverShowAlert);
             });
             
             var doPick = function () {
@@ -69,8 +114,9 @@
                 if (arr.length > 0) {
                     var picked = pick(arr);
                     outTxt = 'Picked: ' + picked;
+                } else {
+                    outTxt = 'Add an item!';
                 }
-                else outTxt = 'Invalid input.';
                 
                 $('p#output').text(outTxt);
             };
@@ -88,8 +134,8 @@
                 <h1>Pick Random <small>v1.0</small></h1>
             </div>
             
-            <div class="alert alert-info alert-dismissable" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="close">
+            <div id="usage-alert" class="alert alert-info alert-dismissable" role="alert">
+                <button type="button" id="close-alert" class="close" data-dismiss="alert" aria-label="close">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <p>What is this?</p>
